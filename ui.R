@@ -4,6 +4,7 @@ require(shinydashboard)
 require(fresh)
 require(DT)
 
+require(survival)
 require(reticulate)         # hub do Pythona
 
 # ---------------------------
@@ -34,10 +35,10 @@ header <- dashboardHeader(title = "Analiza wstępna bazy danych")
 sidebar <- dashboardSidebar(
   radioButtons(inputId = "wybor", label = "Uaktywnij bazę:", choices = c("R", "Python"), selected = "R"),  
   selectInput("baza_r", label = "Wybierz bazę R", choices = c(data(iris), data(airquality), data(mtcars),
-              data(longley), data(faithful), data(women))), # okienko wyboru bazy
+              data(longley), data(faithful), data(women), data(retinopathy, package="survival"), data(imotor, package="survival"))), # okienko wyboru bazy
   selectInput("baza_p", label = "Wybierz bazę Pythona", choices = c("iris_py", "diabetes_py", "wine_py",
-              "linnerud_py","california_housing_py","breast_cancer_py"))
-)
+              "linnerud_py","california_housing_py","breast_cancer_py")))
+
 
 # ------------------------------------------------------------------------------
 # Fliud rows
@@ -59,7 +60,7 @@ frow0 <- fluidRow(
       hr(style = "border-top: 1px solid #6f8dbf"),
       p("Aplikację utworzono w R i RStudio. Zastosowane pakiety:", style = "color: #6f8dbf"),
       p("* System Library,", style = "color: #6f8dbf"),
-      p("* User Library: shiny, shinydashboard, fresh, DT, reticulate,", style = "color: #6f8dbf"),
+      p("* User Library: shiny, shinydashboard, fresh, DT,survival, reticulate,", style = "color: #6f8dbf"),
       p("* oraz funkcje Pythona zawarte w plikach zewnętrznych.", style = "color: #6f8dbf"),
       p("Autor: ", style = "color: #6f8dbf")
   ),
@@ -80,15 +81,23 @@ frow1 <- fluidRow(
 frow2 <- fluidRow( 
   # Fluid row in dashboard body
   box(
-    title = "Podsumowanie",
+    title = "Statystyka",
     status = "primary",
     solidHeader = TRUE, 
     collapsible = TRUE, 
     width = 12,
-    height = 600, 
+    height = 300, 
     verbatimTextOutput("podsumowanie"),
   ),
-)
+  box(
+    title = "Dodatkowe informacje",
+    status = "primary",
+    solidHeader = TRUE, 
+    collapsible = TRUE, 
+    width = 12,
+    height = 300, 
+    verbatimTextOutput("info"),
+  ),
 
 frow3 <- fluidRow(                                            # Fluid row in dashboard body
   column(width = 6,
@@ -108,7 +117,7 @@ frow3 <- fluidRow(                                            # Fluid row in das
     collapsible = TRUE, 
     width = 12,
     height = 100,
-    numericInput("nr_kolumny",label = NULL ,  1, min = 1, max = 10)    
+    numericInput("nr_kolumny",label = NULL ,  1, min = 1, max = 40)    
   ),
   box(
       title = "Liczba słupków w histogramie:",
@@ -133,6 +142,7 @@ frow3 <- fluidRow(                                            # Fluid row in das
     height = 600,
 #    plotOutput("histogram")
   )  
+)
 )
 
 frow4 <- fluidRow(                                            # Fluid row in dashboard body

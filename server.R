@@ -44,16 +44,56 @@ function(input, output, session) {
 
 # -----------------------
   
-  output$podsumowanie <- renderPrint({                      
-
+  output$podsumowanie <- renderPrint(                      
+    width =800,
+    {
     if (input$wybor == "R"){
+      cat(paste("Baza: ", input$wybor,": ", input$baza_r,"\n\n"))
       dataset <- get(input$baza_r)
+      print(summary(dataset))
     } else {
+      cat(paste("Baza: ", input$wybor,": ", input$baza_p,"\n\n"))
+      source_python("podsumowanie.txt")
       dataset <- get(input$baza_p)
+      print(summary(dataset))   #funkcja Pythona
     }
     summary(dataset)
   })
 
+  output$info <- renderPrint(
+    width = 800,
+    {                      
+      if (input$wybor == "R"){
+        dataset <- get(input$baza_r)
+      } else {
+        source_python("podsumowanie.txt")
+        dataset <- get(input$baza_p)
+      }
+      cat("liczba wierszy =",as.character(nrow(dataset)))
+      cat("\nliczba kolumn =",as.character(ncol(dataset)),"\n\n")
+      cat("Typy zmiennych:\n")
+      print(sapply(dataset, class))
+      cat("\nOdchylenie standardowe:\n")
+      # licznik faktorów
+      dfff <- dataset
+      licznik <- 0                     
+      wek <- rep(0, ncol(dataset))
+      for (i in 1:ncol(dataset)){
+        if(class(dataset[,i]) == "factor"){
+          licznik <- licznik + 1
+          wek[licznik] <- i
+        }
+      }
+      # wyznaczanie sd dla danych ilościowych
+      if (licznik != 0){
+        dfff <- dfff[-wek]
+      }
+      
+      print(sapply(dfff,sd))
+      
+    })
+
+  
   # ---------------------
   
   output$histogram <- renderPlot({                         
