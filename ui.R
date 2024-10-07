@@ -133,15 +133,30 @@ frow3 <- fluidRow(                                            # Fluid row in das
                   value = 15)
     )
   ),
-  box(
-    title = "Tablica korelacji",
-    status = "primary",
-    solidHeader = TRUE, 
-    collapsible = TRUE, 
-    width = 6,
-    height = 600,
-#    plotOutput("histogram")
-  )  
+  
+  column(width = 6, 
+  
+    box(
+      title = "Wykres kwantylowy Q-Q",
+      status = "primary",
+      solidHeader = TRUE, 
+      collapsible = TRUE, 
+      width = 12,
+      height = 610,
+      plotOutput("qq", height = 550)
+    ),  
+    
+    box(
+      title = "Wybierz numer kolumny bazy:",
+      status = "primary",
+      solidHeader = TRUE, 
+      collapsible = TRUE, 
+      width = 12,
+      height = 100,
+      numericInput("nr_kolumny_1",label = NULL ,  1, min = 1, max = 40)    
+    ),
+    
+  )
 )
 )
 
@@ -154,7 +169,7 @@ frow4 <- fluidRow(                                            # Fluid row in das
            collapsible = TRUE, 
            width = 12,
            height = 460,
- #          plotOutput("histogram")
+           plotOutput("xy")
          ),
          box(
            title = "Wybierz nr kolumny x:",
@@ -173,6 +188,18 @@ frow4 <- fluidRow(                                            # Fluid row in das
            width = 12,
            height = 100,
            numericInput("nr_kolumny_y",label = NULL ,  1, min = 1, max = 10)    
+         ),
+  ),
+  
+  column(width= 6,
+         box(
+           title = "Table korelacji",
+           status = "primary",
+           solidHeader = TRUE, 
+           collapsible = TRUE, 
+           width = 12,
+           height = 700,
+           plotOutput("kor", height = 640)
          ),
   )
 )

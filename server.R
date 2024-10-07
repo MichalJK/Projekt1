@@ -4,6 +4,9 @@ require(shinydashboard)
 require(DT)
 
 require(reticulate)
+require(car)
+require(ggplot2)
+require(corrplot)
 
 # Define server logic required to draw a histogram
 
@@ -79,7 +82,7 @@ function(input, output, session) {
       licznik <- 0                     
       wek <- rep(0, ncol(dataset))
       for (i in 1:ncol(dataset)){
-        if(class(dataset[,i]) == "factor"){
+        if(class(dataset[,i]) != "numeric" & class(dataset[,i]) != "integer"){
           licznik <- licznik + 1
           wek[licznik] <- i
         }
@@ -105,7 +108,7 @@ function(input, output, session) {
     }
     
     ii <- input$nr_kolumny                                     # numer kolumny
-    x    <- dataset[,ii]                                       # kolumna w wybranej bazie
+    x    <- na.omit(dataset[,ii])                                       # kolumna w wybranej bazie
     ss <- colnames(dataset)[ii]                                # nazwa tej kolumny  
     bins <- seq(min(x), max(x), length.out = input$slupki+ 1)  # wektor punktów pomiędzy słupkami histogramu
                                                                # length.out	- pożądana liczba słupków
@@ -115,4 +118,86 @@ function(input, output, session) {
     )
   })    
 
+  output$qq <- renderPlot({                         
+    
+    if (input$wybor == "R"){
+      dataset <- get(input$baza_r)
+    } else {
+      dataset <- get(input$baza_p)
+    }
+    
+    ii <- input$nr_kolumny_1                                     # numer kolumny
+    x    <- na.omit(dataset[,ii])                                       # kolumna w wybranej bazie
+    ss <- colnames(dataset)[ii]                                # nazwa tej kolumny  
+    
+  
+      if(class(x) == "numeric" || class(x) == "integer") {
+        srednia <- mean(x)
+        odch <- sd(x)
+        
+        xx <- pnorm(x, mean = srednia, sd = odch)
+        xx <- qnorm(xx)
+        
+        qqPlot(xx, dist = "norm", col = "#6f8dbf", col.lines = "#b8c5de",
+               pch = 16, xlab = "Kwantyle rozkładu normalnego", 
+               ylab = paste("Kwantyle rozkładu: ", ss), 
+               main = paste("Wykres Q-Q dla: ", ss)
+        )
+        
+    }
+  })    
+  
+  output$xy <- renderPlot({                         
+    if (input$wybor == "R"){
+      dataset <- get(input$baza_r)
+    } else {
+      dataset <- get(input$baza_p)
+    }
+    ii <- input$nr_kolumny_x                                     # numer kolumny
+    x    <- na.omit(dataset[,ii])                              # kolumna w wybranej bazie
+    ssx <- colnames(dataset)[ii]                                # nazwa tej kolumny  
+    jj <- input$nr_kolumny_y                                     # numer kolumny
+    y    <- na.omit(dataset[,jj])                              # kolumna w wybranej bazie
+    ssy <- colnames(dataset)[jj]                                # nazwa tej kolumny  
+    dane <- data.frame(x,y)
+    ggplot(dane, aes(x,y)) +
+      geom_point(colour = "#6f8dbf") +
+      geom_smooth(method = "lm", color = "#6f8dbf", fill = "#b8c5de") +
+      labs(
+        title = paste("Wykres zależności:   ", ssy, "=f(",ssx,")"),
+        x = ssx,
+        y = ssy
+      )+
+      theme(plot.title = element_text(hjust = 0.5))
+    
+  })      
+  
+  output$kor <- renderPlot({                         
+    if (input$wybor == "R"){
+      dataset <- get(input$baza_r)
+    } else {
+      dataset <- get(input$baza_p)
+    }
+    
+    # licznik faktorów
+    dfff <- dataset
+    licznik <- 0                     
+    wek <- rep(0, ncol(dataset))
+    for (i in 1:ncol(dataset)){
+      if(class(dataset[,i]) != "numeric" & class(dataset[,i]) != "integer"){
+        licznik <- licznik + 1
+        wek[licznik] <- i
+      }
+    }
+   
+    if (licznik != 0){
+      dfff <- dfff[-wek]
+    }
+    
+    correlation <- cor(na.omit(dfff))
+    corrplot(correlation, order = "AOE", type = "upper",tl.pos = "td")
+    
+  })     
+  
+  
 }
