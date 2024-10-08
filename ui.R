@@ -1,13 +1,11 @@
+#Plik UI do aplikacji "Analiza wstępna bazy danych"
 
 require(shiny)
 require(shinydashboard)
 require(fresh)
 require(DT)
 
-require(survival)
-require(reticulate)         # hub do Pythona
-
-# ---------------------------
+# --------------------------- theme aplikacji
 
 mytheme <- create_theme(    # z pakietu 'fresh'
   adminlte_color(
@@ -33,13 +31,16 @@ header <- dashboardHeader(title = "Analiza wstępna bazy danych")
 # Sidebar  
 
 sidebar <- dashboardSidebar(
-  radioButtons(inputId = "wybor", label = "Uaktywnij bazę:", choices = c("R", "Python"), selected = "R"),  
+  radioButtons(inputId = "wybor", label = "Uaktywnij bazę:", choices = c("R", "Python", "Plik"), selected = "R"),  
   selectInput("baza_r", label = "Wybierz bazę R", choices = c(data(iris), data(airquality), data(mtcars),
               data(longley), data(faithful), data(women), data(retinopathy, package="survival"), data(imotor, package="survival"))), # okienko wyboru bazy
   selectInput("baza_p", label = "Wybierz bazę Pythona", choices = c("iris_py", "diabetes_py", "wine_py",
-              "linnerud_py","california_housing_py","breast_cancer_py")))
-
-
+              "linnerud_py","california_housing_py","breast_cancer_py")),
+  fileInput("plik", label = "Wczytaj z pliku", accept = c(".txt",".csv")),
+  checkboxInput("header","Nagłówek", TRUE),
+  radioButtons(inputId = "sep", label = "Separator", choices = c(Przecinek = ",", Średnik = ";",Tab = "\t"), selected = "\t")
+  
+)
 # ------------------------------------------------------------------------------
 # Fliud rows
 
