@@ -1,3 +1,0 @@
-def podsumowanie(dataset):
-	summary = datase.describe()
-	return(summary)
