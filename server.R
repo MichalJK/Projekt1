@@ -7,11 +7,10 @@ require(shinydashboard)
 require(DT)
 
 require(reticulate)     # hub do pythona
-require(car)            # qqPlot
 require(ggplot2)        # gglplot
+require(qqplotr)
 require(corrplot)       # corrplot
-require(DescTools)      # Kurt(), #Skew()
-
+require(moments)      # 
 # ------------------------Funkcja serwera--------------------------
 
 function(input, output, session) {
@@ -131,8 +130,8 @@ notka <- function(dataset,ii){                                      # wywołuje 
       odch <- sapply(dfff,sd)
       suma <- sapply(dfff,sum)
       rozstep <-rozst(dfff)
-      kurtoza <- sapply(dfff, Kurt)
-      skosnosc <- sapply(dfff, Skew)
+      kurtoza <- sapply(dfff, kurtosis)
+      skosnosc <- sapply(dfff, skewness)
       
       informacja <- data.frame(NA,1:ncol(dfff),ncol = ncol(dfff), nrow = 5)
       informacja <- rbind(odch, rozstep,kurtoza, skosnosc, suma)
@@ -180,11 +179,17 @@ notka <- function(dataset,ii){                                      # wywołuje 
         xx <- pnorm(x, mean = srednia, sd = odch)
         xx <- qnorm(xx)
         
-        qqPlot(xx, dist = "norm", col = "#6f8dbf", col.lines = "#b8c5de",
-               pch = 16, xlab = "Kwantyle rozkładu normalnego", 
-               ylab = paste("Kwantyle rozkładu: ", ss), 
-               main = paste("Wykres Q-Q dla: ", ss)
-        )
+        ggplot(mapping = aes(sample = xx)) +
+          stat_qq_band(col = '#d3dbe8', fill = '#d3dbe8') +
+          stat_qq_point(col = '#6f8dbf',size = 1) +
+          stat_qq_line(col = '#6f8dbf') +
+          xlab("Kwantyle rozkładu normalnego") +
+          ylab(paste("Kwantyle rozkładu: ",ss)) +
+          ggtitle (paste("Wykres Q-Q dla: ", ss)) +
+          theme(plot.title = element_text(hjust = 0.5)) +
+          theme(axis.text = element_text(size = 13),
+                axis.title = element_text(size = 13),
+                plot.title = element_text(size = 15))
         
     }
   })    
