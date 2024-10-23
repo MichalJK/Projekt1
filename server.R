@@ -8,7 +8,6 @@ require(DT)
 
 require(reticulate)     # hub do pythona
 require(ggplot2)        # gglplot
-require(qqplotr)
 require(corrplot)       # corrplot
 require(moments)      # 
 # ------------------------Funkcja serwera--------------------------
@@ -179,18 +178,35 @@ notka <- function(dataset,ii){                                      # wywołuje 
         xx <- pnorm(x, mean = srednia, sd = odch)
         xx <- qnorm(xx)
         
-        ggplot(mapping = aes(sample = xx)) +
-          stat_qq_band(col = '#d3dbe8', fill = '#d3dbe8') +
-          stat_qq_point(col = '#6f8dbf',size = 1) +
-          stat_qq_line(col = '#6f8dbf') +
-          xlab("Kwantyle rozkładu normalnego") +
-          ylab(paste("Kwantyle rozkładu: ",ss)) +
-          ggtitle (paste("Wykres Q-Q dla: ", ss)) +
+        xx <- sort(xx)                                       # kwantyle rozkładu x
+        n <- length(x)
+        yy <- rep(0,n)
+        
+        pom = 0.5^(1/n)                                      # dystrybuanta rozkładu normalnego
+        for (i in 1:n){
+          if (i != 1 & i != n){
+            yy[i] = (i - 0.3175) / (n + 0.365)
+          } else if ( i == 1){
+            yy[i] = 1 - pom
+          } else if (i == n) {
+            yy[i] = pom
+          }
+        }
+        yy <- qnorm(yy)                                     # kwantyle rozkładu normalnego
+        dane <- data.frame(yy,xx)
+        ggplot(dane, aes(yy,xx)) +
+          geom_point(colour = "#6f8dbf", size = 0.7) +
+          #     geom_smooth(method = "lm",color = "#6f8dbf", fill = "#b8c5de") +
+          geom_abline(intercept = 0, slope = 1, color="#6f8dbf", size=0.5)+
+          labs(
+            title = paste("Wykres Q-Q dla: ", ss),
+            x = "Kwantyle rozkładu normalnego",
+            y = paste("Kwantyle rozkładu: ",ss)
+          ) +
           theme(plot.title = element_text(hjust = 0.5)) +
           theme(axis.text = element_text(size = 13),
                 axis.title = element_text(size = 13),
                 plot.title = element_text(size = 15))
-        
     }
   })    
   

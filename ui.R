@@ -112,7 +112,7 @@ frow01 <- fluidRow(                          # zakładka "Strona tytułowa" - d�
       tags$ul(
               tags$li("System Library,"),
               tags$li("User Library: shiny, shinydashboard, fresh, DT, survival,
-                      reticulate, car, ggplot2, corrplot, DescTools"),
+                      reticulate, ggplot2, corrplot, moments"),
               tags$li("oraz biblioteki Pythona (pandas i sklearn) i funkcje Pythona zawarte w plikach zewnętrznych."),
       ),
       
