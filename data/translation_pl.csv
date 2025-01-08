@@ -1,0 +1,52 @@
+pl,en
+Uaktywnij bazę:,Activate database:
+Wybierz bazę R, Select R database
+Wybierz bazę Pythona, Select Python database
+Wczytaj z pliku, Load from file
+Nagłówek pliku, Header
+Separator pliku, Separator
+Strona tytułowa, Front page
+Baza,Database
+Statystyka opisowa, Descriptive statistics
+Wykresy1,Charts1
+Wykresy2, Charts2
+Analiza wstępna bazy danych, Initial database analysis
+Aplikacja wykorzystuje bazy ćwiczebne zawarte w bibliotekach R i Pythona. Istnieje możliwość wczytania własnej bazy danych z urządzenia lokalnego., The application makes use of the training bases included in the R and Python libraries. It is possible to load your own database from a local device.
+Aplikacja przeprowadza następującą analizę baz danych:, The application performs the following database analysis:
+- określa typ zmiennych (kolumn bazy);,- determines the type of variables (database columns);
+- liczbę wierszy i kolumn;,- the number of rows and columns;
+- wartość średnią,- mean
+ medianę, median
+ pierwszy i trzeci kwartyl zmiennych;, first and third quartiles of the variables;
+- odchylenie standardowe i rozstęp;,- standard deviation and range;
+- kurtozę i skośność;,- kurtosis and skewness;
+- wykreśla histogram wybranej zmiennej oraz wykres kwantylowy Q-Q;,- plots a histogram of the selected variable and a Q-Q quantile plot;
+- wykonuje wykres punktowy zależności wybranych zmiennych;,- makes a scatterplot of the relationship of selected variables;
+- wykonuje wykres tabeli korelacji zmiennych ilościowych.,- makes a chart of the correlation table of quantitative variables.
+Poszczególne funkcje aplikacji realizowane są na następnych zakładkach.,The application's functions are implemented on the following tabs.
+Dopuszczalny format plików zewnętrznych: .txt oraz .csv. Kolumny zmiennych mogą być oddzielone przecinkiem,Acceptable format for external files: .txt and .csv. Columns of variables may be separated by a comma
+ średnikiem lub tabem. Mogą posiadać nagłówki lub nie., semicolon or tab. They may or may not have headers.
+Aplikację utworzono w R i RStudio. Zastosowane pakiety:,The application was created in R and RStudio. Packages used:
+- oraz biblioteki Pythona (pandas i sklearn) i funkcje Pythona zawarte w plikach zewnętrznych.,- and Python libraries (pandas and sklearn) and Python functions contained in external files.
+Autor,Author
+Podstawowe dane statystyczne,Basic statistics
+Dodatkowe informacje,Further information
+Wybierz numer kolumny bazy:,Select the column number of the base:
+Liczba słupków w histogramie:,Number of bins in the histogram:
+Wykres kwantylowy Q-Q,Quantile Q-Q plot
+Wykres punktowy, Scatterplot
+Wybierz nr kolumny x:,Select column number x:
+Wybierz nr kolumny y:,Select column number y:
+Tabela korelacji,Correlation table
+liczba wierszy =,number of rows =
+liczba kolumn =,number of columns =
+Typy zmiennych:,Variable class:
+Dodatkowe informacje statystyczne,Additional statistical information
+rozstęp:,range:
+kurtoza:,kurtosis:
+skośność:,skewness:
+suma:,sum:
+Wykres Q-Q dla: ,Q-Q plot for:
+Kwantyle rozkładu: ,Quantiles of the distribution: 
+Kwantyle rozkładu normalnego,Quantiles of the normal distribution
+Baza nie zawiera liczbowej kolumny nr ,The database does not contain a numerical column no. 
