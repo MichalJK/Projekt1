@@ -1,5 +1,5 @@
 Jest to moja pierwsza Shiny. Temat wynika z moich zainteresować analizą danych. Aplikacja jest przykładem współpracy R i Pythona w jednym projekcie. 
-Aplikacja jest dostępna na AWS (Amazon Web Services ) pod adresem: http://16.171.39.95:3838/Projekt1/
+Aplikacja jest dostępna na AWS (Amazon Web Services ) pod adresem: https://michal-kolodziejczyk.shinyapps.io/Projekt1/
 # Temat: Analiza wstępna bazy danych
 Aplikacja wykorzystuje bazy ćwiczebne zawarte w bibliotekach R i Pythona. 
 
